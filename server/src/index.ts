@@ -1,27 +1,32 @@
 import { createServer } from 'http';
-import { JSONRPCRequest, JSONRPCServer } from 'json-rpc-2.0';
 import { Server, Socket } from 'socket.io';
-import { configJsonRPCServer } from './jsonRPCServer';
+import { handleNmeaFile } from './nmeaUtils';
+import dotenv from 'dotenv';
+
+dotenv.config();
+const cors = {
+    origin: process.env.CORS_ORIGIN?.split(',') || 'http://localhost:5173',
+    methods: ["GET", "POST"],
+ }
 
 const server = createServer();
-const io = new Server(server);
-const jsonRPCServer = new JSONRPCServer();
+const io = new Server(server, {
+    cors
+});
 
-configJsonRPCServer(io, jsonRPCServer);
-
-let clients : string[]  = [];
+let clients = new Map();
 
 io.on('connection', (socket : Socket) => {
     console.log('Client connected', socket.id);
-    clients.push(socket.id);
+    clients.set(socket.id, socket);
 })
 
 io.on('disconnect', (socket : Socket) => {
-    clients = clients.filter(clientId => clientId !== socket.id);
+    clients.delete(socket.id);
 });
 
 const args = process.argv.slice(2);
-console.log(args);
+console.log('Options: ', args);
 
 if (args.length < 2) {
     console.log("Usage: npm run start:dev <filePath> <speedFactor> <delay : OPTIONAL>");
@@ -30,6 +35,38 @@ if (args.length < 2) {
     const defaultDelay = 10;
     const [filePath, speed, delay = defaultDelay] = args;
 
+    const nmeaCoordinates = handleNmeaFile(filePath);
+    let currentIndex = 0;
+
+    function startReplay(){
+        if(currentIndex < nmeaCoordinates.length){
+            const data = nmeaCoordinates[currentIndex];
+            clients.forEach(clientSocket => {
+                clientSocket.emit('trainUpdate', data);
+            });
+            currentIndex++;
+            setTimeout(startReplay, (1 / Number(speed)) * 1000);
+        }else{
+            currentIndex = 0;
+            io.emit('resetPath');
+            setTimeout(startReplay, (1 / Number(speed)) * 1000);
+        }
+    }
+
+    setTimeout(startReplay, Number(delay) * 1000);
+
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}\n`);
+});
+
+
+// const jsonRPCServer = new JSONRPCServer();
+
+// configJsonRPCServer(io, jsonRPCServer);
+
+
     // const jsonRpcRequest : JSONRPCRequest = {
     //     jsonrpc: '2.0',
     //     id: 1,
@@ -37,9 +74,3 @@ if (args.length < 2) {
     //     params: {
     //     }
     // };
-
-
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}\n`);
-});
