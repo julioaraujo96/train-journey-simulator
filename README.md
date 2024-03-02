@@ -16,12 +16,13 @@ The web client should, at least, display the journey path and the train's curren
 - cd into client and run `npm install`
 ### How to run client and server
 Client:
-- `npm run dev`
+- `npm run dev` <br>
+
 Server:
 - `npm run start:dev <filePath> <speedFactor> <delay : OPTIONAL>` (Default is 10 seconds).
 - `npm run test` to run jest test suites.
 
 ### Environment Variables
-I left a .env.example, if you perhaps want to change the PORT or the app url or the server url.
-Just rename it, change the variables and you are good to go.
+I left a `.env.example` file in server and client, if you perhaps want to change the PORT or the app url or the server url.
+Just rename it to `.env`, change the variables and you are good to go.
   
