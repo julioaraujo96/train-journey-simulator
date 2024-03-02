@@ -12,12 +12,12 @@ export function handleNmeaFile(filePath: string) {
   }
 }
 
-function readNmeaFile(filePath: string) {
+export function readNmeaFile(filePath: string) {
   const fileContent = fs.readFileSync(filePath, 'utf8');
   return fileContent.split('\n').filter((line) => line.startsWith('$GPRMC'));
 }
 
-function parseNmeaRMC(nmeaCoord: string) {
+export function parseNmeaRMC(nmeaCoord: string) {
   const data = LocationUtility.parseRMC(nmeaCoord, 'metric');
   const { latitude, longitude, date, time }: TrainLocation = data;
 
@@ -29,33 +29,22 @@ function parseNmeaRMC(nmeaCoord: string) {
   };
 }
 
-function parseNmeaTime(nmeadate: number, time: number) {
+export function parseNmeaTime(nmeadate: number, time: number) {
   // Extrair a data e o tempo
-const dateString = nmeadate.toString();
-const timeString = time.toString();
+  const dateString = nmeadate.toString();
+  const timeString = time.toString();
 
-// Formatar a data
-const day = dateString.substring(0, 2);
-const month = dateString.substring(2, 4);
-const year = dateString.substring(4, 6);
-const formattedDate = `${day}/${month}/${year}`;
+  // Formatar a data
+  const day = dateString.substring(0, 2);
+  const month = dateString.substring(2, 4);
+  const year = dateString.substring(4, 6);
+  const formattedDate = `${day}/${month}/${year}`;
 
-// Formatar o tempo
-const hours = timeString.substring(0, 2);
-const minutes = timeString.substring(2, 4);
-const seconds = timeString.substring(4, 6);
-const formattedTime = `${hours}:${minutes}:${seconds}`;
+  // Formatar o tempo
+  const hours = timeString.substring(0, 2);
+  const minutes = timeString.substring(2, 4);
+  const seconds = timeString.substring(4, 6);
+  const formattedTime = `${hours}:${minutes}:${seconds}`;
 
-return`${formattedDate} ${formattedTime}`;
+  return `${formattedDate} ${formattedTime}`;
 }
-
-//testes
-// const read = readNmeaFile(
-//   'C:\\Users\\arauj\\Desktop\\projetos\\train-journey-simulator\\server\\src\\nmeaFiles\\leixoes_campanha.txt'
-// );
-// console.log(read);
-
-// const nmeaStringRMC =
-//   '$GPRMC,150854.361,A,4111.674,N,00840.871,W,038.9,005.4,290622,000.0,W*6D';
-// const parsedDataRMC = parseNmeaRMC(nmeaStringRMC);
-// console.log(parsedDataRMC);
