@@ -29,7 +29,7 @@ const args = process.argv.slice(2);
 console.log('Options: ', args);
 
 if (args.length < 2) {
-    console.log("Usage: npm run start:dev <filePath> <speedFactor> <delay : OPTIONAL(Default: 10)>");
+    console.log("Usage: npm run start:dev <filePath> <speed> <delay : OPTIONAL(Default: 10)>");
     process.exit(1);
 } 
     const defaultDelay = 10;

@@ -19,7 +19,7 @@ Client:
 - `npm run dev` <br>
 
 Server:
-- `npm run start:dev <filePath> <speedFactor> <delay : OPTIONAL>` (Default is 10 seconds).
+- `npm run start:dev <filePath> <speed> <delay : OPTIONAL>` (Default is 10 seconds).
 - `npm run test` to run jest test suites.
 
 ### Environment Variables
