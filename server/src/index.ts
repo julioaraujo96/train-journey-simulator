@@ -49,11 +49,19 @@ if (args.length < 2) {
         }else{
             currentIndex = 0;
             io.emit('resetPath');
+            emitJourney();
             setTimeout(startReplay, (1 / Number(speed)) * 1000);
         }
     }
-
+   
     setTimeout(startReplay, Number(delay) * 1000);
+    setTimeout(emitJourney, Number(delay) * 1000);
+
+    function emitJourney(){
+        if(nmeaCoordinates.length > 0) {
+            io.emit('trainJourney', nmeaCoordinates);
+        }
+    }
 
 
 const PORT = process.env.PORT || 3000;

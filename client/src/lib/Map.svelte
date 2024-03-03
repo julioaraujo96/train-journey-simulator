@@ -11,6 +11,7 @@
   let map: Map;
   let trainMarker: Marker;
   let pathCoordinates: [number, number][] = [];
+  let fullJourney: [number, number][] = [];
 
   onMount(async () => {
     if (browser) {
@@ -30,31 +31,52 @@
         })
       );
 
+      const storedFullJourney = localStorage.getItem('fullJourney');
+      if (storedFullJourney) {
+        fullJourney = JSON.parse(storedFullJourney);
+        L.polyline(fullJourney, { color: 'red' }).addTo(map);
+      }
+
+      io.on('trainJourney', (coords) => {
+        const latLngs = coords.map((coord: TrainLocation) => [
+          coord.latitude,
+          coord.longitude,
+        ]);
+        fullJourney = latLngs;
+        // Idealmente isto ficava em cache no redis ou uma solução parecida
+        localStorage.setItem('fullJourney', JSON.stringify(fullJourney));
+        L.polyline(fullJourney, { color: 'red' }).addTo(map);
+      });
+
       io.on('trainUpdate', (data: TrainLocation) => {
         if (data) {
-          console.log('Updating train location');
           updateMarkerPosition(data, trainMarker, map);
           // Desenha a linha do percurso
           L.polyline(pathCoordinates, { color: 'blue' }).addTo(map);
         }
       });
 
-      io.on('resetPath', () => {
-        pathCoordinates = [];
-      });
-
-      io.on('disconnect', () => {
-        console.log('Disconnected');
+      function resetLines(){
         // Limpar as coordenadas da polyline
         pathCoordinates = [];
-        // Remover a polyline existente do mapa
+
         if (map) {
+          // Remover a polyline existente do mapa
           map.eachLayer((layer) => {
             if (layer instanceof L.Polyline) {
               map.removeLayer(layer);
             }
           });
         }
+      }
+
+      io.on('resetPath', () => {
+        resetLines();
+      });
+
+      io.on('disconnect', () => {
+        console.log('Disconnected');
+        resetLines();
       });
 
       io.on('connect_error', (error) => {
@@ -87,7 +109,7 @@
 
 <div id="map" class="container"></div>
 {#if !map}
- <div class="error-message">De momento não foi possível carregar o mapa..</div>
+  <div class="error-message">De momento não foi possível carregar o mapa..</div>
 {/if}
 
 <style>
