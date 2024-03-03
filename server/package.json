@@ -4,7 +4,7 @@
   "description": "Simulation of tracking a train journey in realtime with websocket connection",
   "main": "src/index.ts",
   "scripts": {
-    "start:dev": "nodemon",
+    "dev": "nodemon",
     "test": "jest",
     "test:watch": "jest --watch"
   },

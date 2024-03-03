@@ -14,13 +14,18 @@ The web client should, at least, display the journey path and the train's curren
 - Clone this repository into your projects folder.
 - cd into server and run `npm install`
 - cd into client and run `npm install`
-### How to run client and server
+### How to run client and server (In the project root folder)
 Client:
-- `npm run dev` <br>
+- `npm run dev:client` <br>
 
 Server:
-- `npm run start:dev <filePath> <speed> <delay : OPTIONAL>` (Default is 10 seconds).
+- `npm run dev:server <filePath> <speed> <delay : OPTIONAL>` (Default is 10 seconds).
 - `npm run test` to run jest test suites.
+
+Example: 
+npm run dev:server src/nmeaFiles/leixoes_campanha.txt 2 20
+
+![alt text](image.png)
 
 ### Environment Variables
 I left a `.env.example` file in server and client, if you perhaps want to change the PORT or the app url or the server url.

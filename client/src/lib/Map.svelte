@@ -32,6 +32,7 @@
 
       io.on('trainUpdate', (data: TrainLocation) => {
         if (data) {
+          console.log('Updating train location');
           updateMarkerPosition(data, trainMarker, map);
           // Desenha a linha do percurso
           L.polyline(pathCoordinates, { color: 'blue' }).addTo(map);

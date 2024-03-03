@@ -1,0 +1,12 @@
+{
+  "name": "train-journey-simulator",
+  "version": "1.0.0",
+  "description": "Implement a client-server solution to simulate a train journey based on a NMEA (gps) file attached;",
+  "main": "index.js",
+  "scripts": {
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev --"
+  },
+  "author": "",
+  "license": "ISC"
+}
