@@ -5,7 +5,7 @@
   import 'leaflet/dist/leaflet.css';
 
   import type { TrainLocation } from '../../../common/types/types';
-  import type { Map, Marker } from 'leaflet';
+  import type { LatLngExpression, Map, Marker } from 'leaflet';
   import { timeStore } from './store';
 
   let map: Map;
@@ -32,9 +32,10 @@
       );
 
       const storedFullJourney = localStorage.getItem('fullJourney');
+
       if (storedFullJourney) {
         fullJourney = JSON.parse(storedFullJourney);
-        L.polyline(fullJourney, { color: 'red' }).addTo(map);
+        L.polyline(fullJourney, { color: '#2e86de' }).addTo(map);
       }
 
       io.on('trainJourney', (coords) => {
@@ -45,30 +46,16 @@
         fullJourney = latLngs;
         // Idealmente isto ficava em cache no redis ou uma solução parecida
         localStorage.setItem('fullJourney', JSON.stringify(fullJourney));
-        L.polyline(fullJourney, { color: 'red' }).addTo(map);
+        drawPolyline(fullJourney, '#0097e6', map);
       });
 
       io.on('trainUpdate', (data: TrainLocation) => {
         if (data) {
           updateMarkerPosition(data, trainMarker, map);
           // Desenha a linha do percurso
-          L.polyline(pathCoordinates, { color: 'blue' }).addTo(map);
+          drawPolyline(pathCoordinates, 'blue', map);
         }
       });
-
-      function resetLines(){
-        // Limpar as coordenadas da polyline
-        pathCoordinates = [];
-
-        if (map) {
-          // Remover a polyline existente do mapa
-          map.eachLayer((layer) => {
-            if (layer instanceof L.Polyline) {
-              map.removeLayer(layer);
-            }
-          });
-        }
-      }
 
       io.on('resetPath', () => {
         resetLines();
@@ -82,29 +69,47 @@
       io.on('connect_error', (error) => {
         console.error('Connection error:', error);
       });
+
+      function updateMarkerPosition(
+        data: TrainLocation,
+        trainMarker: Marker,
+        map: Map
+      ) {
+        const currentZoom = map.getZoom();
+        const { latitude, longitude, time }: TrainLocation = data;
+
+        if (time) {
+          timeStore.set(time.toString());
+        }
+
+        // Atualiza a posição do marker
+        trainMarker.setLatLng([latitude, longitude]);
+
+        // Adiciona a nova coordenada à lista de coordenadas
+        pathCoordinates.push([latitude, longitude]);
+
+        map.setView([latitude, longitude], currentZoom); // Ajustar a view
+      }
+      
+      function drawPolyline(data: LatLngExpression[], color: string, map: Map) {
+        L.polyline(data, { color }).addTo(map);
+      }
+
+      function resetLines() {
+        // Limpar as coordenadas da polyline
+        pathCoordinates = [];
+
+        if (map) {
+          // Remover a polyline existente do mapa
+          map.eachLayer((layer) => {
+            if (layer instanceof L.Polyline) {
+              map.removeLayer(layer);
+            }
+          });
+        }
+      }
     }
   });
-
-  function updateMarkerPosition(
-    data: TrainLocation,
-    trainMarker: Marker,
-    map: Map
-  ) {
-    const currentZoom = map.getZoom();
-    const { latitude, longitude, time }: TrainLocation = data;
-
-    if (time) {
-      timeStore.set(time.toString());
-    }
-
-    // Atualiza a posição do marker
-    trainMarker.setLatLng([latitude, longitude]);
-
-    // Adiciona a nova coordenada à lista de coordenadas
-    pathCoordinates.push([latitude, longitude]);
-
-    map.setView([latitude, longitude], currentZoom); // Ajustar a view
-  }
 </script>
 
 <div id="map" class="container"></div>
