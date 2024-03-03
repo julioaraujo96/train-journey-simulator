@@ -15,7 +15,7 @@
   onMount(async () => {
     if (browser) {
       const L = await import('leaflet');
-      map = L.map('map').setView([41.19, -8.68], 18);
+      map = L.map('map').setView([41.19, -8.68], 16);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution:
