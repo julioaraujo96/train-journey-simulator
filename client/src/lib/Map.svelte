@@ -35,7 +35,7 @@
 
       if (storedFullJourney) {
         fullJourney = JSON.parse(storedFullJourney);
-        L.polyline(fullJourney, { color: '#2e86de' }).addTo(map);
+        drawPolyline(fullJourney, '#0097e6', map);
       }
 
       io.on('trainJourney', (coords) => {
