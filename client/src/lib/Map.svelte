@@ -4,9 +4,15 @@
   import { io } from '$lib/webSocketConnection.js';
   import 'leaflet/dist/leaflet.css';
 
-  import type { TrainLocation } from '../../../common/types/types';
   import type { LatLngExpression, Map, Marker } from 'leaflet';
   import { timeStore } from './store';
+
+  interface TrainLocation {
+    latitude: number;
+    longitude: number;
+    time?: number | string;
+    date?: number;
+  }
 
   let map: Map;
   let trainMarker: Marker;
@@ -90,7 +96,7 @@
 
         map.setView([latitude, longitude], currentZoom); // Ajustar a view
       }
-      
+
       function drawPolyline(data: LatLngExpression[], color: string, map: Map) {
         L.polyline(data, { color }).addTo(map);
       }

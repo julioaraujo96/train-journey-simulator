@@ -1,4 +1,4 @@
-import { TrainLocation, StartReplayParams } from '../../common/types/types';
+import { TrainLocation, StartReplayParams } from './types';
 import * as fs from 'fs';
 import { LocationUtility } from 'location-utilities/es5/index';
 
