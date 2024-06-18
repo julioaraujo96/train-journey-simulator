@@ -5,19 +5,15 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 const cors = {
-  origin: process.env.CORS_ORIGIN?.split(',') || [
-    'http://localhost:5173',
-    'http://localhost:4173',
-    'http://localhost:8080',
-    'http://localhost:3000',
-  ],
-
+  origin: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:8080'],
   methods: ['GET', 'POST'],
 };
 
 const server = createServer();
+
 const io = new Server(server, {
   cors,
+  path: process.env.SERVER_PATH || '/api/',
 });
 
 let clients = new Map();
@@ -71,7 +67,7 @@ function emitJourney() {
   }
 }
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.SERVER_PORT;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}\n`);
 });

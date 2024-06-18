@@ -3,11 +3,15 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    container_name: frontend
     expose:
       - 4173
     networks:
       - private
+    env_file:
+      - 'prod.env'
+    environment:
+      - VITE_SERVER_URL
+      - SERVER_PATH
     depends_on:
       - backend
 
@@ -21,6 +25,11 @@ services:
       - private
     volumes:
       - ./server/src/nmeaFiles/leixoes_campanha.txt:/app/src/nmeaFiles/leixoes_campanha.txt:ro
+    env_file:
+      - 'prod.env'
+    environment:
+      - SERVER_PATH
+      - SERVER_PORT
 
   nginx:
     image: nginx:stable-alpine3.19-perl

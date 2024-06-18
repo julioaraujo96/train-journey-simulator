@@ -1,7 +1,7 @@
 import ioClient from 'socket.io-client';
 
-const ENDPOINT = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+const ENDPOINT = import.meta.env.VITE_SERVER_URL;
 
-const socket = ioClient(ENDPOINT);
+const socket = ioClient(ENDPOINT, { path: '/api/' });
 
 export const io = socket;
