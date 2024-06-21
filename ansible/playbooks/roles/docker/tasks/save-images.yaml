@@ -1,0 +1,29 @@
+# - name: Save frontend Docker image
+#   local_action: command docker save -o frontend.tar train-journey-simulator-frontend 
+
+# - name: Save backend Docker image
+#   local_action: command docker save -o backend.tar train-journey-simulator-backend 
+
+# - name: Save nginx Docker image
+#   local_action: command docker save -o nginx.tar nginx
+
+- name: Create app directory
+  file:
+    path: /home/{{ ansible_user }}/app
+    state: directory
+    mode: '0755'
+
+- name: Copy frontend Docker image to the server
+  copy:
+    src: ./builds/frontend.tar
+    dest: /home/{{ ansible_user }}/app/frontend.tar
+
+- name: Copy backend Docker image to the server
+  copy:
+    src: ./builds/backend.tar
+    dest: /home/{{ ansible_user }}/app/backend.tar
+
+- name: Copy nginx Docker image to the server
+  copy:
+    src: ./builds/nginx.tar
+    dest: /home/{{ ansible_user }}/app/nginx.tar

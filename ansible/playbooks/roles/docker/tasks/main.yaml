@@ -1,0 +1,15 @@
+    - name: Include tasks for installing Docker and Docker Compose
+      include_tasks: install-docker.yaml
+      
+    - name: Save docker images and copy to server
+      include_tasks: save-images.yaml
+
+    - name: Include tasks for loading Docker images
+      include_tasks: load-images.yaml
+
+    - name: Include tasks for setting up environment and starting services
+      include_tasks: setup.yaml
+
+    - name: Include tasks for running docker container
+      include_tasks: run-container.yaml
+

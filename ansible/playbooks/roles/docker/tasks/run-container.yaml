@@ -1,0 +1,19 @@
+# - name: Backend container creation
+#   community.docker.docker_container:
+#     name: train-journey-simulator-backend
+#     image: train-journey-simulator-backend:latest
+
+# - name: Frontend container creation
+#   community.docker.docker_container:
+#     name: train-journey-simulator-frontend
+#     image: train-journey-simulator-frontend:latest
+    
+# - name: Nginx container creation
+#   community.docker.docker_container:
+#     name: nginx
+#     image: nginx:stable-alpine3.19-perl
+
+- name: Start Docker Compose services
+  command: docker compose up -d
+  args:
+    chdir: /home/{{ ansible_user }}/app

@@ -1,0 +1,5 @@
+- name: Deploy Docker containers
+  hosts: all
+  become: yes
+  roles:
+    - docker

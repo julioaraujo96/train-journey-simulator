@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.provider "virtualbox" do |v|
+    v.name = "nextstop"
+    v.memory = 2048
+    v.cpus = 1
+    v.customize [ "modifyvm", :id, "--uartmode1", "disconnected" ]
+  end
+
+  config.vm.box = "ubuntu/focal64"
+
+  HOSTNAME_SUFFIX = [*('a'..'z')].sample(8).join
+  config.vm.hostname = "nextstop-#{HOSTNAME_SUFFIX}"
+
+  config.vm.network "private_network", ip: "192.168.56.101"
+
+  # We're not using config.vm.provision "ansible", so that we can simulate
+  # provisioning in the same conditions than it happens with production servers
+  #
+  # `provision.sh` script will create default account and allow ssh login with
+  # password. Then, running ansible will "fix" it again.
+  config.vm.provision "shell", path: "provision.sh"
+
+end
