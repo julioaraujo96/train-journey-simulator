@@ -1,9 +1,3 @@
-- name: Update and upgrade all packages to the latest version
-  ansible.builtin.apt:
-    update_cache: true
-    upgrade: dist
-    cache_valid_time: 3600
-
 - name: Install dependencies
   ansible.builtin.apt:
     name:
@@ -48,13 +42,13 @@
 
 - name: Add user to Docker group
   ansible.builtin.user:
-    name: "{{ ansible_user }}"
+    name: '{{ ansible_user }}'
     groups: docker
     append: true
 
 - name: Enable and start Docker services
   ansible.builtin.systemd:
-    name: "{{ item }}"
+    name: '{{ item }}'
     enabled: true
     state: started
   loop:

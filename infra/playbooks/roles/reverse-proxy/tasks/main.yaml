@@ -1,11 +1,16 @@
 - name: Create nginx conf directory
   file:
-    path: /home/{{ ansible_user }}/app/nginx/
+    path: /home/{{ ansible_user }}/app/infra/playbooks/roles/reverse-proxy/files/
     state: directory
     mode: '0755'
 
-- name: Save reverse-proxy Docker image
-  local_action: command docker save -o ../builds/reverse-proxy.tar reverse-proxy
+- name: Copy nginx conf
+  copy:
+    src: ../files/nginx.conf
+    dest: /home/{{ ansible_user }}/app/infra/playbooks/roles/reverse-proxy/files/nginx.conf
+
+# - name: Save reverse-proxy Docker image
+#   local_action: command docker save -o ../builds/reverse-proxy.tar reverse-proxy
 
 - name: Copy reverse-proxy Docker image to the server
   copy:

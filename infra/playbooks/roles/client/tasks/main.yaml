@@ -1,5 +1,5 @@
-- name: Save reverse-proxy Docker image
-  local_action: command docker save -o ../builds/client.tar client
+# - name: Save client Docker image
+#   local_action: command docker save -o ../builds/client.tar client
 
 - name: Copy client Docker image to the server
   copy:

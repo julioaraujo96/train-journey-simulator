@@ -2,6 +2,8 @@
   hosts: all
   become: true
   roles:
+    - common
     - client
     - server
+    - reverse-proxy
     - docker

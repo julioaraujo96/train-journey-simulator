@@ -1,8 +1,6 @@
 services:
   frontend:
-    build:
-      context: .components/client
-      dockerfile: Dockerfile
+    image: train-journey-simulator-frontend
     expose:
       - 4173
     networks:
@@ -16,9 +14,7 @@ services:
       - backend
 
   backend:
-    build:
-      context: ./components/server
-      dockerfile: Dockerfile
+    image: train-journey-simulator-backend
     expose:
       - 3000
     networks:
