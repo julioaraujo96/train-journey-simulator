@@ -1,0 +1,14 @@
+- name: Create nginx conf directory
+  file:
+    path: /home/{{ ansible_user }}/app/nginx/
+    state: directory
+    mode: '0755'
+
+- name: Save reverse-proxy Docker image
+  local_action: command docker save -o ../builds/reverse-proxy.tar reverse-proxy
+
+- name: Copy reverse-proxy Docker image to the server
+  copy:
+    src: ../builds/reverse-proxy.tar
+    dest: /home/{{ ansible_user }}/app/reverse-proxy.tar
+  when: inventory_hostname == 'dev'

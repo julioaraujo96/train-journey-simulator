@@ -1,0 +1,11 @@
+- name: Load frontend Docker image
+  command: docker load -i /home/{{ ansible_user }}/app/client.tar
+  when: inventory_hostname == 'dev'
+
+- name: Load backend Docker image
+  command: docker load -i /home/{{ ansible_user }}/app/server.tar
+  when: inventory_hostname == 'dev'
+
+- name: Load reverse-proxy Docker image
+  command: docker load -i /home/{{ ansible_user }}/app/reverse-proxy.tar
+  when: inventory_hostname == 'dev'

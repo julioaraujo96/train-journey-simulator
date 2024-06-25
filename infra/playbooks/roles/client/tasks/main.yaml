@@ -1,0 +1,8 @@
+- name: Save reverse-proxy Docker image
+  local_action: command docker save -o ../builds/client.tar client
+
+- name: Copy client Docker image to the server
+  copy:
+    src: ../builds/client.tar
+    dest: /home/{{ ansible_user }}/app/client.tar
+  when: inventory_hostname == 'dev'

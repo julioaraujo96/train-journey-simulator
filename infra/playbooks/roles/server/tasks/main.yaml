@@ -1,0 +1,36 @@
+- name: Copy environment file
+  copy:
+    src: ../prod.env
+    dest: /home/{{ ansible_user }}/app/prod.env
+    mode: '0644'
+
+- name: Create nmeaFiles directory
+  file:
+    path: /home/{{ ansible_user }}/app/components/server/src/nmeaFiles/
+    state: directory
+    mode: '0755'
+
+- name: Copy nmeaFile
+  copy:
+    src: ../files/leixoes_campanha.txt
+    dest: /home/{{ ansible_user }}/app/components/server/src/nmeaFiles/leixoes_campanha.txt
+
+- name: Copy nginx conf
+  copy:
+    src: ../files/nginx.conf
+    dest: /home/{{ ansible_user }}/app/infra/playbooks/roles/reverse-proxy/files/nginx.conf
+
+- name: Copy Docker Compose file
+  copy:
+    src: ../files/compose.yaml
+    dest: /home/{{ ansible_user }}/app/compose.yaml
+    mode: '0644'
+
+- name: Save server Docker image
+  local_action: command docker save -o ../builds/server.tar server
+
+- name: Copy server Docker image to the server
+  copy:
+    src: ../builds/server.tar
+    dest: /home/{{ ansible_user }}/app/server.tar
+  when: inventory_hostname == 'dev'

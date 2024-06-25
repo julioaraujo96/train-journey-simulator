@@ -1,8 +1,0 @@
-- name: Load frontend Docker image
-  command: docker load -i /home/{{ ansible_user }}/app/frontend.tar
-
-- name: Load backend Docker image
-  command: docker load -i /home/{{ ansible_user }}/app/backend.tar
-
-- name: Load nginx Docker image
-  command: docker load -i /home/{{ ansible_user }}/app/nginx.tar

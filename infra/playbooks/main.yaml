@@ -1,5 +1,7 @@
 - name: Deploy Docker containers
   hosts: all
-  become: yes
+  become: true
   roles:
+    - client
+    - server
     - docker

@@ -1,6 +1,8 @@
 services:
   frontend:
-    image: train-journey-simulator-frontend
+    build:
+      context: .components/client
+      dockerfile: Dockerfile
     expose:
       - 4173
     networks:
@@ -14,13 +16,15 @@ services:
       - backend
 
   backend:
-    image: train-journey-simulator-backend
+    build:
+      context: ./components/server
+      dockerfile: Dockerfile
     expose:
       - 3000
     networks:
       - private
     volumes:
-      - ./server/src/nmeaFiles/leixoes_campanha.txt:/app/src/nmeaFiles/leixoes_campanha.txt:ro
+      - ./components/server/src/nmeaFiles/leixoes_campanha.txt:/app/src/nmeaFiles/leixoes_campanha.txt:ro
     env_file:
       - 'prod.env'
     environment:
@@ -35,7 +39,7 @@ services:
       - private
       - public
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infra/playbooks/roles/reverse-proxy/files/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - backend
       - frontend

@@ -1,0 +1,9 @@
+# - name: Backend container creation
+#   community.docker.docker_container:
+#     name: train-journey-simulator-backend
+#     image: train-journey-simulator-backend:latest
+
+- name: Start Docker Compose services
+  command: docker compose up -d
+  args:
+    chdir: /home/{{ ansible_user }}/app
