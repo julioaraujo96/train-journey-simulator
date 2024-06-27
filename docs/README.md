@@ -1,10 +1,10 @@
 ### Infra up and ready:
 
-[Selecting a correct docker image](ansible-guide.md)
+[Selecting a correct docker image](selecting-docker-image.md)
 
-[Creating a dockerfile](ansible-guide.md)
+[Creating a dockerfile](creating-dockerfile.md)
 
-[Docker compose examle](ansible-guide.md)
+[Docker compose examle](docker-compose.md)
 
 [Ansible guide](ansible-guide.md)
 
