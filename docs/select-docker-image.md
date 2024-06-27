@@ -2,7 +2,7 @@ When choosing a docker image, we need to take some things into consideration:
 
 ### Who is The Author? Is it from a secure source?
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f4c7b319-34d8-483b-9932-47179ddd0a1c/bf7f5c76-1915-4284-b40a-9eb6d09e0774/Untitled.png)
+![image](https://github.com/julioaraujo96/train-journey-simulator/assets/49203294/f7603027-5525-4698-a821-0396b8d6130b)
 
 - [Docker Official Images](https://hub.docker.com/search?image_filter=official)
 - [Verified Publisher](https://hub.docker.com/search?image_filter=store), this is from docker partnered organizations, with the content verified by docker.
@@ -10,7 +10,7 @@ When choosing a docker image, we need to take some things into consideration:
 
 ### Architechture
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f4c7b319-34d8-483b-9932-47179ddd0a1c/d657390d-af3f-4926-aaf1-fc73e1759d83/Untitled.png)
+![image](https://github.com/julioaraujo96/train-journey-simulator/assets/49203294/059201d3-c81b-425b-812d-37fb5f99d420)
 
 linux/arm64
 
@@ -22,7 +22,7 @@ A specific image not compiled for a arm architecture , would not run directly on
 
 ### Tags
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f4c7b319-34d8-483b-9932-47179ddd0a1c/d1e06ed5-bfa1-4e79-9b20-afbce21c164a/Untitled.png)
+![image](https://github.com/julioaraujo96/train-journey-simulator/assets/49203294/a22a9399-a11a-4c05-a844-3e9f1fd3d33e)
 
 Tags should be a hint for the image content, especially for the specific version of the image. We should choose python:3.10.6 instead of python:3 for example.
 
