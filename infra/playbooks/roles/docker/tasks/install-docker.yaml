@@ -6,6 +6,7 @@
       - curl
       - gnupg-agent
       - software-properties-common
+      - python3-docker
 
 - name: Create directory for Docker's GPG key
   ansible.builtin.file:
