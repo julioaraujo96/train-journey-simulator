@@ -1,6 +1,6 @@
 ### Infra up and ready:
 
-[Selecting a correct docker image](selecting-docker-image.md)
+[Selecting a correct docker image](select-docker-image.md)
 
 [Creating a dockerfile](creating-dockerfile.md)
 
