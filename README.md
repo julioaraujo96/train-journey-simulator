@@ -11,10 +11,13 @@ initialization, the server should accept clients' connections at any time. The s
 The web client should, at least, display the journey path and the train's current geolocation over a map.
 
 ## How to setup for development 
+
 - Clone this repository into your projects folder.
 - cd into server and run `npm install`
 - cd into client and run `npm install`
+
 ### How to run client and server (In the project root folder)
+
 Client:
 - `npm run dev:client` <br>
 
@@ -28,6 +31,21 @@ npm run dev:server src/nmeaFiles/leixoes_campanha.txt 2 20
 ![alt text](image.png)
 
 ### Environment Variables
+
 I left a `.env.example` file in server and client, if you perhaps want to change the PORT or the app url or the server url.
 Just rename it to `.env`, change the variables and you are good to go.
   
+## How-to Deploy
+
+### Staging Environment
+
+1. Create a Virtual Machine (required VirtualBox and Vagrant to be installed)
+
+   ```
+   cd infra; vagrant up
+   ```
+2. Provision the Virtual Machine (may require local `sudo` password)
+
+   ```
+   ansible-playbook -i inventory playbooks/main.yaml -K
+   ```

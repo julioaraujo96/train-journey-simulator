@@ -3,7 +3,7 @@
 #     name: train-journey-simulator-backend
 #     image: train-journey-simulator-backend:latest
 
-- name: Start Docker Compose services
-  command: docker compose up -d
-  args:
-    chdir: /home/{{ ansible_user }}/app
+# - name: Start Docker Compose services
+#   command: docker compose up -d
+#   args:
+#     chdir: /home/{{ ansible_user }}/app

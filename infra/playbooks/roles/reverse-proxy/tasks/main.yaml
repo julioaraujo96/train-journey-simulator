@@ -1,19 +1,43 @@
+- name: Pull reverse-proxy Docker base image
+  delegate_to: localhost
+  community.docker.docker_image:
+    name: nginx
+    tag: latest
+    source: pull
+
+- name: Save reverse-proxy Docker image
+  delegate_to: localhost
+  community.docker.docker_image:
+    name: nginx
+    tag: latest
+    archive_path: "{{role_path}}/files/dist/reverse-proxy.tar"
+    source: local
+
+- name: Copy reverse-proxy Docker image to the server
+  when: inventory_hostname == 'dev'
+  copy:
+    src: dist/reverse-proxy.tar
+    dest: /tmp/reverse-proxy.tar
+
+- name: Load frontend Docker image
+  when: inventory_hostname == 'dev'
+  community.docker.docker_image:
+    name: nginx
+    tag: latest
+    load_path: /tmp/reverse-proxy.tar
+    source: load
+
 - name: Create nginx conf directory
   file:
-    path: /home/{{ ansible_user }}/app/infra/playbooks/roles/reverse-proxy/files/
+    path: /home/{{ ansible_user }}/app/data/reverse-proxy/
     state: directory
     mode: '0755'
 
 - name: Copy nginx conf
   copy:
-    src: ../files/nginx.conf
-    dest: /home/{{ ansible_user }}/app/infra/playbooks/roles/reverse-proxy/files/nginx.conf
+    src: nginx.conf
+    dest: /home/{{ ansible_user }}/app/data/reverse-proxy/nginx.conf
 
-# - name: Save reverse-proxy Docker image
-#   local_action: command docker save -o ../builds/reverse-proxy.tar reverse-proxy
-
-- name: Copy reverse-proxy Docker image to the server
-  copy:
-    src: ../builds/reverse-proxy.tar
-    dest: /home/{{ ansible_user }}/app/reverse-proxy.tar
-  when: inventory_hostname == 'dev'
+# This is here just because reverse-proxy is the last role to execute
+- name: Create and start services
+  shell: docker compose -f /home/{{ ansible_user }}/app/compose.yaml up -d

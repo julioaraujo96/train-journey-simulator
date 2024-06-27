@@ -1,31 +1,45 @@
-- name: Copy environment file
+- name: Save Server Docker image
+  delegate_to: localhost
+  become: yes
+  community.docker.docker_image:
+    name: server
+    tag: latest
+    archive_path: "{{role_path}}/files/dist/server.tar"
+    source: local
+
+- name: Copy Server Docker image to the server
+  when: inventory_hostname == 'dev'
   copy:
-    src: ../files/prod.env
-    dest: /home/{{ ansible_user }}/app/prod.env
-    mode: '0644'
+    src: "{{role_path}}/files/dist/server.tar"
+    dest: /tmp/server.tar
+
+- name: Load frontend Docker image
+  when: inventory_hostname == 'dev'
+  community.docker.docker_image:
+    name: server
+    tag: latest
+    load_path: /tmp/server.tar
+    source: load
 
 - name: Create nmeaFiles directory
   file:
-    path: /home/{{ ansible_user }}/app/components/server/src/nmeaFiles/
+    path: /home/{{ ansible_user }}/app/data/server/nmea-files/
     state: directory
     mode: '0755'
 
-- name: Copy nmeaFile
+- name: Copy NMEA file
   copy:
-    src: ../files/leixoes_campanha.txt
-    dest: /home/{{ ansible_user }}/app/components/server/src/nmeaFiles/leixoes_campanha.txt
+    src: leixoes-campanha.txt
+    dest: /home/{{ ansible_user }}/app/data/server/nmea-files/leixoes-campanha.txt
 
 - name: Copy Docker Compose file
   copy:
-    src: ../files/compose.yaml
+    src: compose.yaml
     dest: /home/{{ ansible_user }}/app/compose.yaml
     mode: '0644'
 
-# - name: Save server Docker image
-#   local_action: command docker save -o ../builds/server.tar server
-
-- name: Copy server Docker image to the server
+- name: Copy Docker Configuration file
   copy:
-    src: ../builds/server.tar
-    dest: /home/{{ ansible_user }}/app/server.tar
-  when: inventory_hostname == 'dev'
+    src: prod.env
+    dest: /home/{{ ansible_user }}/app/prod.env
+    mode: '0644'

@@ -3,7 +3,7 @@
   become: true
   roles:
     - common
+    - docker
     - client
     - server
     - reverse-proxy
-    - docker

@@ -1,8 +1,21 @@
-# - name: Save client Docker image
-#   local_action: command docker save -o ../builds/client.tar client
+- name: Save client Docker image
+  delegate_to: localhost
+  community.docker.docker_image:
+    name: client
+    tag: latest
+    archive_path: "{{role_path}}/files/dist/client.tar"
+    source: local
 
 - name: Copy client Docker image to the server
-  copy:
-    src: ../builds/client.tar
-    dest: /home/{{ ansible_user }}/app/client.tar
   when: inventory_hostname == 'dev'
+  copy:
+    src: "{{role_path}}/files/dist/client.tar"
+    dest: /tmp/client.tar
+
+- name: Load frontend Docker image
+  when: inventory_hostname == 'dev'
+  community.docker.docker_image:
+    name: client
+    tag: latest
+    load_path: /tmp/client.tar
+    source: load
