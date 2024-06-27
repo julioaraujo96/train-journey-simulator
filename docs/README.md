@@ -1,8 +1,11 @@
 ### Infra up and ready:
 
 [Selecting a correct docker image](ansible-guide.md)
+
 [Creating a dockerfile](ansible-guide.md)
+
 [Docker compose examle](ansible-guide.md)
+
 [Ansible guide](ansible-guide.md)
 
 ### Useful resources:
