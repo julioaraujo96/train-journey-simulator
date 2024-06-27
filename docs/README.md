@@ -1,3 +1,8 @@
+[Ansible guide](ansible-guide.md)
+[Creating a dockerfile](ansible-guide.md)
+[Docker compose examle](ansible-guide.md)
+[Selecting a correct docker image](ansible-guide.md)
+
 ### Resources:
 
 [Environment variables](https://docs.docker.com/compose/environment-variables/set-environment-variables/)
